@@ -1,0 +1,90 @@
+@model portal_academico.Models.CatalogoFiltroViewModel
+@{
+    ViewData["Title"] = "Catálogo de cursos";
+}
+
+<div class="p-4 p-md-5 mb-4 hero-claude">
+    <span class="eyebrow">Oferta académica</span>
+    <h1 class="display-6">Catálogo de cursos</h1>
+    <p class="text-muted-claude mb-0">Filtra por nombre, créditos u horario y elige tu próximo curso.</p>
+</div>
+
+<div class="card card-claude mb-4">
+    <div class="card-body">
+        <form method="get" asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Nombre" class="form-label">Nombre o código</label>
+                    <input asp-for="Nombre" class="form-control" placeholder="Ej. Programación o SIS101" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="MinCred" class="form-label">Créd. mín.</label>
+                    <input asp-for="MinCred" type="number" min="0" class="form-control" placeholder="0" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="MaxCred" class="form-label">Créd. máx.</label>
+                    <input asp-for="MaxCred" type="number" min="0" class="form-control" placeholder="0" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Desde" class="form-label">Desde</label>
+                    <input asp-for="Desde" type="time" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Hasta" class="form-label">Hasta</label>
+                    <input asp-for="Hasta" type="time" class="form-control" />
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-clay">Filtrar</button>
+                <a asp-action="Index" class="btn btn-outline-clay">Limpiar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-clay">Revisa los filtros: hay valores no válidos (se muestra el listado completo).</div>
+}
+
+@if (!Model.Resultados.Any())
+{
+    <div class="alert alert-clay">No se encontraron cursos activos con esos filtros.</div>
+}
+else
+{
+    <p class="text-muted-claude">@Model.Resultados.Count curso(s) disponible(s).</p>
+    <div class="table-responsive">
+    <table class="table table-claude align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Créditos</th>
+                <th>Horario</th>
+                <th>Cupo disponible</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Resultados)
+            {
+                <tr>
+                    <td><strong>@item.Curso.Codigo</strong></td>
+                    <td>@item.Curso.Nombre</td>
+                    <td>@item.Curso.Creditos</td>
+                    <td>@item.Curso.HorarioInicio.ToString("HH:mm") - @item.Curso.HorarioFin.ToString("HH:mm")</td>
+                    <td>
+                        @if (item.CuposDisponibles > 0)
+                        {<span class="badge badge-est">@item.CuposDisponibles libres</span>}
+                        else
+                        {<span class="badge badge-inv">Agotado</span>}
+                    </td>
+                    <td><a asp-action="Details" asp-route-id="@item.Curso.Id">Ver →</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}
