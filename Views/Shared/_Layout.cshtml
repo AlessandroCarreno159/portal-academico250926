@@ -1,41 +1,45 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - portal_academico</title>
+    <title>@ViewData["Title"] - Portal Académico</title>
     <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/claude.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/portal_academico.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-claude box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Portal Académico</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="brand-mark">🎓</span>Portal Académico</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Mostrar navegación">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Catalogo" asp-action="Index">Catálogo</a>
+                            <a class="nav-link" asp-area="" asp-controller="Catalogo" asp-action="Index">Catálogo</a>
                         </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Matriculas" asp-action="MisMatriculas">Mis Matrículas</a>
+                                <a class="nav-link" asp-area="" asp-controller="Matriculas" asp-action="MisMatriculas">Mis Matrículas</a>
                             </li>
                         }
                         @if (User.IsInRole("Coordinador"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Coordinador" asp-action="Index">Coordinador</a>
+                                <a class="nav-link" asp-area="" asp-controller="Coordinador" asp-action="Index">Coordinador</a>
                             </li>
                         }
                         @* P4: aquí se mostrará "Volver al curso {Nombre}" desde Session (Redis-backed) *@
@@ -51,9 +55,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - portal_academico - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer-claude">
+        <div class="container d-flex flex-wrap gap-2 justify-content-between align-items-center">
+            <span>&copy; 2026 - Portal Académico · Universidad</span>
+            <span><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a> · Hecho para el parcial</span>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

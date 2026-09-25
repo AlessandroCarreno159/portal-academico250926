@@ -1,60 +1,63 @@
 ﻿@model portal_academico.Models.HomeIndexViewModel
 @{
-    ViewData["Title"] = "Portal Académico";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="p-4 mb-4 bg-light rounded-3 border">
+<div class="p-4 p-md-5 mb-4 hero-claude">
+    <span class="eyebrow">Semestre 2026 · Examen parcial</span>
     <h1 class="display-5">Portal Académico</h1>
-    <p class="lead mb-1">Gestión de cursos y matrículas — Universidad</p>
-    <p class="text-muted">Explora la oferta de cursos activos e inscríbete. Usuario coordinador: <code>coordinador@uni.edu</code>.</p>
-    <a class="btn btn-primary" asp-controller="Catalogo" asp-action="Index">Ver catálogo</a>
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-        <a class="btn btn-outline-primary" asp-controller="Matriculas" asp-action="MisMatriculas">Mis matrículas</a>
-    }
-    else
-    {
-        <a class="btn btn-outline-secondary" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión para inscribirte</a>
-    }
-    @if (Model.EsCoordinador)
-    {
-        <a class="btn btn-warning" asp-controller="Coordinador" asp-action="Index">Panel Coordinador</a>
-    }
+    <p class="lead mb-1">Gestión de cursos y matrículas de la universidad.</p>
+    <p class="text-muted-claude">Explora la oferta de cursos activos e inscríbete en un clic. Cuenta de coordinador: <code>coordinador@uni.edu</code>.</p>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+        <a class="btn btn-clay" asp-controller="Catalogo" asp-action="Index">Ver catálogo</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a class="btn btn-outline-clay" asp-controller="Matriculas" asp-action="MisMatriculas">Mis matrículas</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-clay" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión para inscribirte</a>
+        }
+        @if (Model.EsCoordinador)
+        {
+            <a class="btn btn-warning" asp-controller="Coordinador" asp-action="Index">Panel Coordinador</a>
+        }
+    </div>
 </div>
 
 @if (User.Identity?.IsAuthenticated == false)
 {
-    <div class="alert alert-info">Inicia sesión para inscribirte en un curso.</div>
+    <div class="alert alert-clay">Inicia sesión para inscribirte en un curso.</div>
 }
 
-<div class="row mb-4">
+<div class="row mb-4 g-3">
     <div class="col-md-4">
-        <div class="card text-center">
+        <div class="card card-claude text-center h-100">
             <div class="card-body">
-                <h5 class="card-title">Cursos activos</h5>
-                <p class="display-6">@Model.TotalCursos</p>
+                <h5 class="card-title text-muted-claude">Cursos activos</h5>
+                <p class="stat-num">@Model.TotalCursos</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center">
+        <div class="card card-claude text-center h-100">
             <div class="card-body">
-                <h5 class="card-title">Cupo total ofertado</h5>
-                <p class="display-6">@Model.TotalCupos</p>
+                <h5 class="card-title text-muted-claude">Cupo total ofertado</h5>
+                <p class="stat-num">@Model.TotalCupos</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center">
+        <div class="card card-claude text-center h-100">
             <div class="card-body">
-                <h5 class="card-title">Mi rol</h5>
-                <p class="display-6 fs-4">
+                <h5 class="card-title text-muted-claude">Mi rol</h5>
+                <p class="fs-5">
                     @if (Model.EsCoordinador)
-                    {<span class="badge bg-warning text-dark">Coordinador</span>}
+                    {<span class="badge badge-coord">Coordinador</span>}
                     else if (User.Identity?.IsAuthenticated == true)
-                    {<span class="badge bg-success">Estudiante</span>}
+                    {<span class="badge badge-est">Estudiante</span>}
                     else
-                    {<span class="badge bg-secondary">Invitado</span>}
+                    {<span class="badge badge-inv">Invitado</span>}
                 </p>
             </div>
         </div>
@@ -62,13 +65,15 @@
 </div>
 
 <h2>Oferta destacada</h2>
+<p class="text-muted-claude">Una selección de cursos activos de este semestre.</p>
 @if (!Model.CursosRecientes.Any())
 {
-    <div class="alert alert-warning">No hay cursos activos por el momento.</div>
+    <div class="alert alert-clay">No hay cursos activos por el momento.</div>
 }
 else
 {
-    <table class="table table-striped">
+    <div class="table-responsive">
+    <table class="table table-claude align-middle mb-0">
         <thead>
             <tr>
                 <th>Código</th>
@@ -83,14 +88,15 @@ else
             @foreach (var c in Model.CursosRecientes)
             {
                 <tr>
-                    <td>@c.Codigo</td>
+                    <td><strong>@c.Codigo</strong></td>
                     <td>@c.Nombre</td>
                     <td>@c.Creditos</td>
                     <td>@c.HorarioInicio.ToString("HH:mm") - @c.HorarioFin.ToString("HH:mm")</td>
                     <td>@c.CupoMaximo</td>
-                    <td><a asp-controller="Catalogo" asp-action="Details" asp-route-id="@c.Id">Ver</a></td>
+                    <td><a asp-controller="Catalogo" asp-action="Details" asp-route-id="@c.Id">Ver →</a></td>
                 </tr>
             }
         </tbody>
     </table>
+    </div>
 }
